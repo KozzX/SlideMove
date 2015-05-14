@@ -2,8 +2,10 @@ local vermelho = display.newRect( display.contentCenterX, display.contentCenterY
 vermelho:setFillColor( 1,0,0 )
 
 local tempoInicio = 0
-local velocidade = 0.614
+local velocidade = 0.3
 local movendo = false
+local tempoClick = 0
+local tempoCliclAnte = 0
 
 local function moverX( x )
 	local distancia 
@@ -38,6 +40,13 @@ function onTouch( event )
 		azul = display.newRect( event.xStart,event.yStart, 0, 0 )
 		azul:setFillColor( 0,0,1 )	
 		azul.alpha = 0.2
+
+		tempoCliclAnte = tempoClick
+		tempoClick = event.time
+
+		if (tempoClick - tempoCliclAnte) < 200 then
+			transition.cancel(  )
+		end	
 
 
 	elseif event.phase == "moved" then
@@ -86,6 +95,7 @@ function onTouch( event )
 
 	elseif event.phase == "ended" then
 		movendo = false
+		
 		display.remove( azul )
 	end
 
